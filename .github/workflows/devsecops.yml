@@ -30,7 +30,16 @@ jobs:
 
       - name: Run Bandit
         run: bandit -r api --severity-level high
+# ... (after Run Bandit step) ...
 
+      # 2.1 Scan des dépendances (NEW)
+      - name: Install Safety
+        run: pip install safety
+
+      - name: Dependency vulnerability scan
+        run: safety check -r requirements.txt
+
+      # ... (before Build Docker step) ...
       # 3. Build Docker
       - name: Build Docker image
         run: docker build -t devsecops-api .
